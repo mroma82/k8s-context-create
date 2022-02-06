@@ -2,7 +2,7 @@
 This is a utility that helps with creating a local context for a Kubernetes cluster
 
 ## How to use
-Download the latest release from [k8s-context-create/releases](k8s-context-create/releases).
+Download the latest release from [https://github.com/mroma82/k8s-context-create/releases](https://github.com/mroma82/k8s-context-create/releases).
 
 ### Parameters
 ```
