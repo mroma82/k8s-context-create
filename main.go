@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	v1a "k8s.io/api/core/v1"
-	v1b "k8s.io/apimachinery/pkg/apis/meta/v1"
+	v1 "k8s.io/api/core/v1"
+	v1machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"romacode.com/k8s-context/models"
@@ -16,21 +16,12 @@ import (
 
 func main() {
 
-	fmt.Println("Hello World!")
-
-	k8sTest()
-}
-
-func k8sTest() {
-
-	// get the args
-	//args := os.Args[1:]
-
-	var err error
+	// info
+	fmt.Println("Kubernetes Context Create Utility")
 
 	// get the connection info
-	var connection *models.Connection
-	if connection, err = getConnection(); err != nil {
+	connection, err := getConnection()
+	if err != nil {
 		fmt.Println("Error getting connection details:")
 		fmt.Println(err)
 		return
@@ -89,7 +80,7 @@ func k8sTest() {
 
 	// get the service accounts
 	fmt.Print("Reading cluster details... ")
-	serviceAccounts, err := clientset.CoreV1().ServiceAccounts(connection.Namespace).List(context.TODO(), v1b.ListOptions{})
+	serviceAccounts, err := clientset.CoreV1().ServiceAccounts(connection.Namespace).List(context.TODO(), v1machinery.ListOptions{})
 	if err != nil {
 		fmt.Println("Error querying service accounts")
 		fmt.Println(err)
@@ -102,32 +93,33 @@ func k8sTest() {
 	for _, sa := range serviceAccounts.Items {
 
 		// get the secret
-		if secret, err := clientset.CoreV1().Secrets(sa.Namespace).Get(context.TODO(), sa.Secrets[0].Name, v1b.GetOptions{}); err == nil {
+		if secret, err := clientset.CoreV1().Secrets(sa.Namespace).Get(context.TODO(), sa.Secrets[0].Name, v1machinery.GetOptions{}); err == nil {
 
 			// check if a match on the token
 			if string(secret.Data["token"]) == connection.Token {
-				fmt.Println("*** FOUND ****")
-				fmt.Println(sa.Name)
 
 				// update connect request
 				contextCreate.Host = connection.Host
 
 				// run
-				if err = execute(contextCreate, &sa, secret); err != nil {
+				if err = createContext(contextCreate, &sa, secret); err != nil {
 					fmt.Println("Error creating context:")
 					fmt.Print(err)
 					return
 				} else {
 					fmt.Println("Context successfully created")
-				}
-			}
 
+				}
+
+				// exit here
+				return
+			}
 		}
 	}
 }
 
-// go
-func execute(request *models.ContextRequest, sa *v1a.ServiceAccount, secret *v1a.Secret) error {
+// function that creates the context
+func createContext(request *models.ContextRequest, sa *v1.ServiceAccount, secret *v1.Secret) error {
 
 	// get the details from the secreate
 	token := string(secret.Data["token"])
