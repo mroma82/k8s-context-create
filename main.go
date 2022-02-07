@@ -50,7 +50,7 @@ func k8sTest() {
 
 	// get the namespace
 	if len(connection.Namespace) == 0 {
-		fmt.Print("Namespace: ")
+		fmt.Print("Namespace (leave blank for all): ")
 		fmt.Scanf("%s", &connection.Namespace)
 	}
 
@@ -68,8 +68,8 @@ func k8sTest() {
 	}
 
 	// validate
-	if len(connection.Host) == 0 || len(connection.Token) == 0 || len(connection.Namespace) == 0 || len(contextCreate.ClusterName) == 0 {
-		fmt.Println("Error, --host, --token, --namespace, --cluster required")
+	if len(connection.Host) == 0 || len(connection.Token) == 0 || len(contextCreate.ClusterName) == 0 {
+		fmt.Println("Error, --host, --token, --cluster required")
 		return
 	}
 
