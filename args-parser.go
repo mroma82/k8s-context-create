@@ -18,9 +18,6 @@ func getConnection() (*models.Connection, error) {
 	// get the token
 	flag.StringVar(&connection.Token, "token", "", "")
 
-	// get the namespace
-	flag.StringVar(&connection.Namespace, "namespace", "", "")
-
 	// insecure
 	flag.BoolVar(&connection.Insecure, "insecure", false, "")
 
@@ -32,7 +29,7 @@ func getConnection() (*models.Connection, error) {
 }
 
 // get the context defaults
-func getContextDetaults() (*models.ContextRequest, error) {
+func getContextDefaults() (*models.ContextRequest, error) {
 
 	// init model
 	contextCreate := models.ContextRequest{}
