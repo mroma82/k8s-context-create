@@ -62,7 +62,7 @@ func main() {
 
 	// create the contenst
 	if err = pkg.CreateContext(contextCreate, connection, token); err != nil {
-		fmt.Errorf("Error creating context:\n")
+		fmt.Errorf("Error creating context:%s\n", "")
 		fmt.Println(err)
 	} else {
 		fmt.Println("Context successfully created")
