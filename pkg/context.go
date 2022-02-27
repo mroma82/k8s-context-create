@@ -49,7 +49,7 @@ func CreateContext(request *ContextRequest, connection *Connection, token *Token
 	fmt.Print("Reading cluster details... ")
 	serviceAccount, err := clientset.CoreV1().ServiceAccounts(token.Namespace).Get(context.TODO(), token.ServiceAccount, v1machinery.GetOptions{})
 	if err != nil {
-		fmt.Errorf("Error querying service account\n")
+		fmt.Println("Error querying service account")
 		return err
 	} else {
 		fmt.Println("Success")
@@ -58,7 +58,7 @@ func CreateContext(request *ContextRequest, connection *Connection, token *Token
 	// get the secret
 	secret, err := clientset.CoreV1().Secrets(token.Namespace).Get(context.TODO(), token.Secret, v1machinery.GetOptions{})
 	if err != nil {
-		fmt.Errorf("Error querying secret\n")
+		fmt.Println("Error querying secret")
 		return err
 	}
 
@@ -82,6 +82,7 @@ func CreateContext(request *ContextRequest, connection *Connection, token *Token
 	certPath := filepath.Join(certDir, fmt.Sprintf("%s.crt", contextName))
 
 	// show details
+	fmt.Printf("Context name: %s\n", contextName)
 	fmt.Printf("Home directory: %s\n", homeDir)
 	fmt.Printf("Cluster directory: %s\n", certDir)
 	fmt.Printf("Certificate path: %s\n", certPath)
@@ -133,7 +134,14 @@ func CreateContext(request *ContextRequest, connection *Connection, token *Token
 	}
 
 	// set context
-	c = exec.Command("kubectl", "config", "set-context", contextName, "--user", fmt.Sprintf("%s-user", contextName), "--cluster", request.ClusterName, "--namespace", "default")
+	c = exec.Command(
+		"kubectl",
+		"config",
+		"set-context",
+		contextName,
+		"--user", fmt.Sprintf("%s-user", contextName),
+		"--cluster", request.ClusterName,
+		"--namespace", "default")
 	_, err = c.Output()
 	if err != nil {
 		return err
