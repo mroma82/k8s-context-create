@@ -1,14 +1,21 @@
-package main
+package pkg
 
 import (
 	"fmt"
 
 	"github.com/lestrrat-go/jwx/jwt"
-	"romacode.com/k8s-context/models"
 )
 
+// type
+type Token struct {
+	Val            string
+	Namespace      string
+	ServiceAccount string
+	Secret         string
+}
+
 // function that parses a token
-func parseToken(tokenStr string) (*models.Token, error) {
+func ParseToken(tokenStr string) (*Token, error) {
 
 	// get the token
 	t, err := jwt.Parse([]byte(tokenStr))
@@ -17,7 +24,9 @@ func parseToken(tokenStr string) (*models.Token, error) {
 	}
 
 	// init token
-	token := &models.Token{}
+	token := &Token{
+		Val: tokenStr,
+	}
 
 	// namespace
 	if v, ok := t.Get("kubernetes.io/serviceaccount/namespace"); ok {

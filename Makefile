@@ -1,5 +1,5 @@
 run:
-	go run *.go --insecure 
+	go run cmd/k8s-context-create/*.go --insecure 
 
 
 build-amd64:

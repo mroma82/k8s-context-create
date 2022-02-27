@@ -3,14 +3,14 @@ package main
 import (
 	"flag"
 
-	"romacode.com/k8s-context/models"
+	"romacode.com/k8s-context/pkg"
 )
 
 // get the connection info from args/env
-func getConnection() (*models.Connection, error) {
+func getConnectionArgs() (*pkg.Connection, error) {
 
 	// init model
-	connection := models.Connection{}
+	connection := pkg.Connection{}
 
 	// get the host
 	flag.StringVar(&connection.Host, "host", "", "")
@@ -29,10 +29,10 @@ func getConnection() (*models.Connection, error) {
 }
 
 // get the context defaults
-func getContextDefaults() (*models.ContextRequest, error) {
+func getContextDefaultsArgs() (*pkg.ContextRequest, error) {
 
 	// init model
-	contextCreate := models.ContextRequest{}
+	contextCreate := pkg.ContextRequest{}
 
 	// context name
 	flag.StringVar(&contextCreate.Name, "context", "", "")
