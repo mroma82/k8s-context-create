@@ -2,7 +2,7 @@ on:
   release:
     types: [created]
 
-name: Create Release
+name: Create Release Assets
 
 jobs:
   releases-matrix:
