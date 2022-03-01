@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:    
+      - 'main'
+      - 'feature/**'
+      - 'hotfix/**'
+
+name: Build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: [ '1.17' ]
+    name: Build go ${{ matrix.go }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+      - run: make build

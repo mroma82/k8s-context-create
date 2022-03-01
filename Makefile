@@ -13,7 +13,10 @@ build-amd64-win:
 build-macos:
 	GOOS=darwin GOARCH=amd64 go build -o bin/k8s-context-create-amd64-darwin cmd/k8s-context-create/*.go
 
-build:
+build-all:
 	make build-amd64
 	make build-amd64-win
 	make build-macos
+
+build:
+	go build cmd/k8s-context-create/*.go
