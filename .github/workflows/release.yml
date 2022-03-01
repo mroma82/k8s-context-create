@@ -6,7 +6,7 @@ on:
 name: Create Release
 
 jobs:
-  build:
+  release:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
@@ -27,9 +27,10 @@ jobs:
           draft: false
           prerelease: false
 
-  releases-matrix:
+  release-assets:
     name: Release Go Binary
     runs-on: ubuntu-latest
+    needs: release
     strategy:
       matrix:
         # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
