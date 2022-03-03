@@ -24,7 +24,7 @@ func ParseToken(tokenStr string) (*Token, error) {
 	}
 
 	// init token
-	token := &Token{
+	token := Token{
 		Val: tokenStr,
 	}
 
@@ -44,5 +44,5 @@ func ParseToken(tokenStr string) (*Token, error) {
 	}
 
 	// return token
-	return *&token, nil
+	return &token, nil
 }
